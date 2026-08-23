@@ -4,12 +4,17 @@ This is a compact working reference for API v1. The canonical live OpenAPI 3.1 c
 
 ## Authentication and charging
 
-Send the long-lived API key as `Authorization: Bearer <key>`. Keep it in `ASO_SKILL_API_KEY`; never put it in client-side browser code, URLs, logs, repositories, or conversations.
+Agent tools should start browser-assisted login with `POST /v1/auth/device`, open the returned verification URL, and poll `POST /v1/auth/device/token`. The account owner signs in and approves the requested scopes. The token response carries the API key in a verifier-encrypted envelope; the official CLI decrypts it and saves it in the operating-system credential store without printing it. `ASO_SKILL_API_KEY` is an explicit override for CI secret injection, not the interactive default.
+
+Send the resulting long-lived API key as `Authorization: Bearer <key>`. Never put it in client-side browser code, URLs, logs, repositories, `.env` created through an agent conversation, or conversations.
 
 | Endpoint | Auth | Credits on success |
 | --- | --- | --- |
 | `GET /` | No | 0 |
 | `GET /health` | No | 0 |
+| `POST /v1/auth/device` | No | 0 |
+| `POST /v1/auth/device/token` | Device code + verifier | 0 |
+| `DELETE /v1/auth/credential` | API key | 0 |
 | `POST /v1/search` | API key | 1 |
 | `POST /v1/popularity` | API key | 1 |
 | `POST /v1/apps/lookup` | API key | 1 for the whole 1–10 app batch |
@@ -18,6 +23,8 @@ Send the long-lived API key as `Authorization: Bearer <key>`. Keep it in `ASO_SK
 | `POST /v1/billing/checkout` | API key | 0 |
 
 Validation errors and failed upstream calls do not consume a credit. Search data is fresh for one hour; popularity and app lookup data are fresh for eight hours. Inspect `cache` and `fetchedAt` on data responses.
+
+Agent credentials support `data`, `credits`, and `checkout` scopes. Default to `data` and `credits`; request `checkout` only with explicit user intent. An authorization request expires after ten minutes. Self-revocation can take up to five minutes to propagate through the authorizer cache.
 
 ## Requests
 
