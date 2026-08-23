@@ -1,0 +1,4 @@
+interface:
+  display_name: "ASO Skill"
+  short_description: "Research App Store keywords and competitors"
+  default_prompt: "Use $aso-skill to analyze an App Store keyword and its leading competitors."
