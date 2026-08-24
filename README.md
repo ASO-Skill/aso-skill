@@ -16,10 +16,10 @@ Until that GitHub organization repository is published, install this checkout lo
 
 ## Authentication
 
-The skill uses the separate [ASO Skill CLI](https://github.com/hesselbom/aso-skill-cli). The agent runs browser-assisted login, the user signs in to ASO Skill and approves the exact scopes, and the CLI saves the credential in the operating-system credential store. Neither the user nor the agent has to copy an API key into `.env` or a conversation.
+The skill uses the separate [ASO Skill CLI](https://github.com/aso-skill/cli). The agent runs browser-assisted login, the user signs in to ASO Skill and approves the exact scopes, and the CLI saves the credential in the operating-system credential store. Neither the user nor the agent has to copy an API key into `.env` or a conversation.
 
 ```bash
-npx --yes github:hesselbom/aso-skill-cli#v0.1.0 login
+npx --yes github:aso-skill/cli#v0.1.1 login
 ```
 
 The default credential has `data` and `credits` access and expires after 90 days. Checkout is an explicit additional permission. `ASO_SKILL_API_KEY` remains available as an override for CI when supplied by the CI platform's secret manager.
