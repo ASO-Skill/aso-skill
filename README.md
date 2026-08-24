@@ -14,7 +14,17 @@ npx skills add aso-skill/aso-skill
 
 The skill follows the open [Agent Skills specification](https://agentskills.io/specification). Its source is available at [ASO-Skill/aso-skill](https://github.com/ASO-Skill/aso-skill).
 
-## Authentication
+## Hosted MCP
+
+ChatGPT, Claude, and other remote MCP clients can connect to:
+
+```text
+https://api.asoskill.com/mcp
+```
+
+The connection uses OAuth authorization code with S256 PKCE, dynamic client registration, short-lived access tokens, refresh rotation, and revocation. See the [MCP guide](https://www.asoskill.com/mcp), [ChatGPT guide](https://www.asoskill.com/chatgpt), and [Claude guide](https://www.asoskill.com/claude).
+
+## CLI authentication
 
 The skill uses the separate [ASO Skill CLI](https://github.com/aso-skill/cli). The agent runs browser-assisted login, the user signs in to ASO Skill and approves the exact scopes, and the CLI saves the credential in the operating-system credential store. Neither the user nor the agent has to copy an API key into `.env` or a conversation.
 
@@ -41,6 +51,7 @@ Every successful search, popularity, or app-lookup request costs one credit. The
 - `SKILL.md` — agent-facing workflow and safety rules
 - `references/api.md` — compact public API and authentication reference
 - `agents/openai.yaml` — optional UI metadata for compatible clients
+- `.codex-plugin/plugin.json` and `.mcp.json` — ChatGPT/Codex plugin packaging for the hosted MCP connection
 
 ## Develop
 

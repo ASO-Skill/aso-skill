@@ -4,12 +4,12 @@ description: Query ASO Skill for current Apple App Store search rankings, keywor
 license: MIT
 metadata:
   author: ASO Skill
-  version: "1.4.0"
+  version: "1.5.0"
 ---
 
 # Use ASO Skill
 
-Use the ASO Skill CLI to retrieve current Apple App Store keyword and app data. ASO Skill is independent of Apple.
+Use the hosted ASO Skill MCP tools when they are connected. Otherwise use the ASO Skill CLI to retrieve current Apple App Store keyword and app data. ASO Skill is independent of Apple.
 
 ## Boundaries
 
@@ -22,21 +22,23 @@ Use the ASO Skill CLI to retrieve current Apple App Store keyword and app data. 
 
 ## Choose calls
 
-| User need | Calls | Cost on success |
+| User need | MCP tool / CLI call | Cost on success |
 | --- | --- | --- |
-| Current ranking results and difficulty | `search` | 1 credit |
-| Keyword popularity | `popularity` | 1 credit |
-| Keyword opportunity using both measures | `search` + `popularity` | 2 credits |
-| Metadata for 1–10 known app IDs | one batched `apps` | 1 credit |
-| Search competitors, then inspect up to 10 | `search` + one batched `apps` | 2 credits |
-| Remaining balance | `credits` | Free |
+| Current ranking results and difficulty | `search_app_store` / `search` | 1 credit |
+| Keyword popularity | `get_keyword_popularity` / `popularity` | 1 credit |
+| Keyword opportunity using both measures | both keyword tools / calls | 2 credits |
+| Metadata for 1–10 known app IDs | `lookup_app_store_apps` / one batched `apps` | 1 credit |
+| Search competitors, then inspect up to 10 | search + one batched lookup | 2 credits |
+| Remaining balance | `get_credit_balance` / `credits` | Free |
 | Available packs | `packs` | Free |
 
 If the user did not specify a storefront or platform, infer them from context. Otherwise use `US` and `iphone`, and state that assumption. Storefronts are two-letter country codes. Search and app lookup platforms are `iphone`, `ipad`, `mac`, `appletv`, `watch`, and `vision`; popularity has no platform parameter.
 
 ## Authenticate without handling secrets
 
-Use the official CLI from its public npm package:
+If the hosted MCP tools are available, use them directly. The client handles OAuth authorization code with S256 PKCE, short-lived access, refresh, and revocation through <https://api.asoskill.com/mcp>. If the connection needs approval, give the user the ASO Skill sign-in and consent URL surfaced by the client. Never replace this flow with an API key.
+
+For a local agent without the hosted MCP connection, use the official CLI from its public npm package:
 
 ```bash
 npx --yes @aso-skill/cli@0.1.4 status
@@ -54,7 +56,11 @@ On a trusted headless machine where the system keyring is unavailable, use `--cr
 
 Do not request `--allow-checkout` during ordinary research. If the user explicitly asks to purchase credits and the current credential lacks `checkout`, explain that replacing it requires logout and a new browser approval. Do not revoke the existing credential until the user confirms that replacement.
 
-## Run the client
+## Run through MCP or the CLI
+
+When connected, call the MCP tools by their names from the table above. Prefer MCP in ChatGPT, Claude, and other cloud clients because it does not require terminal access or a locally stored credential.
+
+For a local terminal-capable agent, run:
 
 ```bash
 npx --yes @aso-skill/cli@0.1.4 search "workout planner" --storefront US --platform iphone

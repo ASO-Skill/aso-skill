@@ -2,6 +2,12 @@
 
 This is a compact working reference for API v1. The canonical live OpenAPI 3.1 contract at <https://www.asoskill.com/openapi.yaml> wins if it differs from this file. The production base URL is `https://api.asoskill.com`.
 
+## Hosted MCP
+
+Remote clients should connect to `https://api.asoskill.com/mcp`. Standard protected-resource and authorization-server metadata advertise OAuth dynamic client registration, authorization code with S256 PKCE, the exact MCP resource, refresh, and revocation endpoints.
+
+The tools are `search_app_store`, `get_keyword_popularity`, `lookup_app_store_apps`, and `get_credit_balance`. The first three cost one credit on success; balance is free. Use the HTTP API details below only when operating through the CLI or building a direct integration.
+
 ## Authentication and charging
 
 Agent tools should start browser-assisted login with `POST /v1/auth/device`, open the returned verification URL, and poll `POST /v1/auth/device/token`. The account owner signs in and approves the requested scopes. The token response carries the API key in a verifier-encrypted envelope; the official CLI decrypts it and saves it in the operating-system credential store without printing it. `ASO_SKILL_API_KEY` is an explicit override for CI secret injection, not the interactive default.

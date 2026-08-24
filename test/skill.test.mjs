@@ -13,6 +13,8 @@ test("skill metadata and browser-auth instructions are complete", async () => {
   assert.match(skill, /@aso-skill\/cli@0\.1\.4 login/);
   assert.match(skill, /verifies that the selected store is writable/);
   assert.match(skill, /operating-system credential store/);
+  assert.match(skill, /https:\/\/api\.asoskill\.com\/mcp/);
+  assert.match(skill, /search_app_store/);
   assert.match(skill, /Do not ask the user to paste a key or create `\.env`/);
   assert.doesNotMatch(skill, /scripts\/aso-skill\.mjs|\bTODO\b|\[TODO/);
   assert.ok(skill.split("\n").length < 500);
@@ -23,4 +25,10 @@ test("skill metadata and browser-auth instructions are complete", async () => {
 
   const openai = await readFile(join(root, "agents", "openai.yaml"), "utf8");
   assert.match(openai, /\$aso-skill/);
+
+  const plugin = JSON.parse(await readFile(join(root, ".codex-plugin", "plugin.json"), "utf8"));
+  assert.equal(plugin.name, "aso-skill");
+  assert.equal(plugin.mcpServers, "./.mcp.json");
+  const mcp = JSON.parse(await readFile(join(root, ".mcp.json"), "utf8"));
+  assert.equal(mcp.mcpServers["aso-skill"].url, "https://api.asoskill.com/mcp");
 });

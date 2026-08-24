@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "aso-skill": {
+      "type": "http",
+      "url": "https://api.asoskill.com/mcp"
+    }
+  }
+}
