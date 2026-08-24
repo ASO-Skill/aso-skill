@@ -4,7 +4,7 @@ description: Query ASO Skill for current Apple App Store search rankings, keywor
 license: MIT
 metadata:
   author: ASO Skill
-  version: "1.3.0"
+  version: "1.3.1"
 ---
 
 # Use ASO Skill
@@ -39,13 +39,13 @@ If the user did not specify a storefront or platform, infer them from context. O
 Use the official CLI from its public repository:
 
 ```bash
-npx --yes github:aso-skill/cli#v0.1.2 status
+npx --yes github:aso-skill/cli#v0.1.3 status
 ```
 
 If status says the user is not logged in, start browser-assisted login:
 
 ```bash
-npx --yes github:aso-skill/cli#v0.1.2 login
+npx --yes github:aso-skill/cli#v0.1.3 login
 ```
 
 Before requesting a credential, the CLI verifies that the selected store is writable. The command then normally opens the ASO Skill connection page. Immediately give the user the URL and connection code printed by the command, then keep the command running while they sign in and approve. The default credential requests only `data` and `credits`, expires after 90 days, and is stored in the operating-system credential store. The API-key plaintext must not appear in terminal output or the conversation.
@@ -57,14 +57,14 @@ Do not request `--allow-checkout` during ordinary research. If the user explicit
 ## Run the client
 
 ```bash
-npx --yes github:aso-skill/cli#v0.1.2 search "workout planner" --storefront US --platform iphone
-npx --yes github:aso-skill/cli#v0.1.2 popularity "workout planner" --storefront US
-npx --yes github:aso-skill/cli#v0.1.2 apps 123456789 987654321 --storefront US --platform iphone
-npx --yes github:aso-skill/cli#v0.1.2 credits
-npx --yes github:aso-skill/cli#v0.1.2 packs
+npx --yes github:aso-skill/cli#v0.1.3 search "workout planner" --storefront US --platform iphone
+npx --yes github:aso-skill/cli#v0.1.3 popularity "workout planner" --storefront US
+npx --yes github:aso-skill/cli#v0.1.3 apps 123456789 987654321 --storefront US --platform iphone
+npx --yes github:aso-skill/cli#v0.1.3 credits
+npx --yes github:aso-skill/cli#v0.1.3 packs
 ```
 
-Use `npx --yes github:aso-skill/cli#v0.1.2 help` for the complete syntax. For durable integrations, unusual response fields, authentication details, or schema questions, read [references/api.md](references/api.md) and then consult the canonical live contract at <https://www.asoskill.com/openapi.yaml>.
+Use `npx --yes github:aso-skill/cli#v0.1.3 help` for the complete syntax. For durable integrations, unusual response fields, authentication details, or schema questions, read [references/api.md](references/api.md) and then consult the canonical live contract at <https://www.asoskill.com/openapi.yaml>.
 
 ## Interpret results
 
@@ -94,7 +94,7 @@ Pack discovery is public and free. Prices exclude applicable tax.
 Only create a checkout after the user explicitly selects a current `packId` and asks to continue. The credential must include the separately approved `checkout` scope. Then run:
 
 ```bash
-npx --yes github:aso-skill/cli#v0.1.2 checkout <pack-id> --confirm-checkout
+npx --yes github:aso-skill/cli#v0.1.3 checkout <pack-id> --confirm-checkout
 ```
 
 Return the short-lived Polar URL as an action the account owner must complete. Do not claim a purchase succeeded until the user completes checkout and `credits` shows the new balance. Never automatically repeat checkout creation. If the API returns `legal_acceptance_required`, direct the user to <https://www.asoskill.com/accept-terms>.
