@@ -22,7 +22,7 @@ ChatGPT, Claude, and other remote MCP clients can connect to:
 https://api.asoskill.com/mcp
 ```
 
-The connection uses OAuth authorization code with S256 PKCE, dynamic client registration, short-lived access tokens, refresh rotation, and revocation. See the [MCP guide](https://www.asoskill.com/mcp), [ChatGPT guide](https://www.asoskill.com/chatgpt), and [Claude guide](https://www.asoskill.com/claude).
+The connection uses OAuth authorization code with S256 PKCE, dynamic client registration, short-lived access tokens, refresh rotation with reuse detection, and dashboard revocation. It exposes five focused tools plus a hosted snapshot of this Agent Skill for compatible clients. See the [MCP guide](https://www.asoskill.com/mcp), [ChatGPT guide](https://www.asoskill.com/chatgpt), and [Claude guide](https://www.asoskill.com/claude).
 
 ## CLI authentication
 

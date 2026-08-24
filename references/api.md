@@ -6,7 +6,7 @@ This is a compact working reference for API v1. The canonical live OpenAPI 3.1 c
 
 Remote clients should connect to `https://api.asoskill.com/mcp`. Standard protected-resource and authorization-server metadata advertise OAuth dynamic client registration, authorization code with S256 PKCE, the exact MCP resource, refresh, and revocation endpoints.
 
-The tools are `search_app_store`, `get_keyword_popularity`, `lookup_app_store_apps`, and `get_credit_balance`. The first three cost one credit on success; balance is free. Use the HTTP API details below only when operating through the CLI or building a direct integration.
+The tools are `search_app_store`, `get_keyword_popularity`, `lookup_app_store_apps`, `get_credit_balance`, and `list_credit_packs`. The first three cost one credit on success; balance and pack discovery are free. Checkout is deliberately not exposed through MCP. The server also advertises the static `aso-skill` Agent Skill through `io.modelcontextprotocol/skills` for compatible clients. Use the HTTP API details below only when operating through the CLI or building a direct integration.
 
 ## Authentication and charging
 

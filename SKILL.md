@@ -4,7 +4,7 @@ description: Query ASO Skill for current Apple App Store search rankings, keywor
 license: MIT
 metadata:
   author: ASO Skill
-  version: "1.5.0"
+  version: "1.6.0"
 ---
 
 # Use ASO Skill
@@ -30,13 +30,13 @@ Use the hosted ASO Skill MCP tools when they are connected. Otherwise use the AS
 | Metadata for 1–10 known app IDs | `lookup_app_store_apps` / one batched `apps` | 1 credit |
 | Search competitors, then inspect up to 10 | search + one batched lookup | 2 credits |
 | Remaining balance | `get_credit_balance` / `credits` | Free |
-| Available packs | `packs` | Free |
+| Available packs | `list_credit_packs` / `packs` | Free |
 
 If the user did not specify a storefront or platform, infer them from context. Otherwise use `US` and `iphone`, and state that assumption. Storefronts are two-letter country codes. Search and app lookup platforms are `iphone`, `ipad`, `mac`, `appletv`, `watch`, and `vision`; popularity has no platform parameter.
 
 ## Authenticate without handling secrets
 
-If the hosted MCP tools are available, use them directly. The client handles OAuth authorization code with S256 PKCE, short-lived access, refresh, and revocation through <https://api.asoskill.com/mcp>. If the connection needs approval, give the user the ASO Skill sign-in and consent URL surfaced by the client. Never replace this flow with an API key.
+If the hosted MCP tools are available, use them directly. The client handles OAuth authorization code with S256 PKCE, short-lived access, rotating refresh tokens, reuse detection, and revocation through <https://api.asoskill.com/mcp>. If the connection needs approval, give the user the ASO Skill sign-in and consent URL surfaced by the client. Never replace this flow with an API key. The server also publishes this skill through the MCP skills extension so compatible clients can import a reviewed snapshot.
 
 For a local agent without the hosted MCP connection, use the official CLI from its public npm package:
 
@@ -85,7 +85,7 @@ Use `npx --yes @aso-skill/cli@0.1.4 help` for the complete syntax. For durable i
 
 - `400`: fix the request; no credit was consumed.
 - `401`: run `status`. If the key expired or was revoked, remove it with `logout` when possible and start browser login again. Never display the key.
-- `402`: no credits remain. Call `packs` for free and present the available choices.
+- `402`: no credits remain. Call `list_credit_packs` through MCP or `packs` through the CLI for free and present the available choices. MCP does not initiate checkout.
 - `403`: the account is unavailable or the credential lacks the route's scope. Do not broaden permissions without the user's explicit approval.
 - `409`: no credit was consumed. A retry is permitted after a short jittered delay.
 - `429`: no credit was consumed. Honor `Retry-After`; otherwise use exponential backoff with jitter.
