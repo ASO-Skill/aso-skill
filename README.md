@@ -6,13 +6,13 @@ It supports current search rankings and keyword difficulty, keyword popularity, 
 
 ## Install
 
-The intended public repository address is:
+Install the skill from its public repository:
 
 ```bash
 npx skills add aso-skill/aso-skill
 ```
 
-Until that GitHub organization repository is published, install this checkout locally with `npx skills add .`. The skill follows the open [Agent Skills specification](https://agentskills.io/specification).
+The skill follows the open [Agent Skills specification](https://agentskills.io/specification). Its source is available at [ASO-Skill/aso-skill](https://github.com/ASO-Skill/aso-skill).
 
 ## Authentication
 
