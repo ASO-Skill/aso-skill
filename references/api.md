@@ -28,7 +28,7 @@ Send the resulting long-lived API key as `Authorization: Bearer <key>`. Never pu
 | `GET /v1/billing/packs` | No | 0 |
 | `POST /v1/billing/checkout` | API key | 0 |
 
-Validation errors and failed upstream calls do not consume a credit. Search data is fresh for one hour; popularity and app lookup data are fresh for eight hours. Inspect `cache` and `fetchedAt` on data responses.
+Validation errors and failed upstream calls do not consume a credit. Search data is fresh for one hour and a stale search fallback is never older than 24 hours. Compact search app summaries are reused for eight hours; optional result fields may be absent when Apple throttles enrichment. Popularity and app lookup data are fresh for eight hours. Inspect `cache` and `fetchedAt` on data responses.
 
 Agent credentials support `data`, `credits`, and `checkout` scopes. Default to `data` and `credits`; request `checkout` only with explicit user intent. An authorization request expires after ten minutes. Self-revocation can take up to five minutes to propagate through the authorizer cache.
 
@@ -113,7 +113,7 @@ Errors normally have `error.code`, `error.message`, and sometimes `error.retryAf
 | `428` | Legal acceptance required for checkout | Have the account owner review and accept terms. |
 | `429` | Rate limited | Honor `Retry-After`, otherwise exponential backoff with jitter. |
 | `502` | Upstream App Store failure | Reserved credit is restored; retry sparingly. |
-| `503` | Temporarily unavailable | Honor `Retry-After`; reserved credit is restored. |
+| `503` | Temporarily unavailable | Honor `Retry-After`; reserved credit is restored. MCP tool errors state the delay and refund explicitly. |
 | `500` | Unexpected failure | Reserved credit is restored; retry sparingly. |
 
 Do not retry a metered request after a connection drop or timeout when the HTTP outcome is unknown without telling the user that the first attempt may already have succeeded and consumed a credit. Never automatically retry checkout creation.

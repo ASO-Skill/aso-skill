@@ -16,7 +16,8 @@ test("skill metadata and browser-auth instructions are complete", async () => {
   assert.match(skill, /https:\/\/api\.asoskill\.com\/mcp/);
   assert.match(skill, /search_app_store/);
   assert.match(skill, /list_credit_packs/);
-  assert.match(skill, /version: "1\.6\.0"/);
+  assert.match(skill, /version: "1\.6\.1"/);
+  assert.match(skill, /never older than 24 hours/);
   assert.match(skill, /Do not ask the user to paste a key or create `\.env`/);
   assert.doesNotMatch(skill, /scripts\/aso-skill\.mjs|\bTODO\b|\[TODO/);
   assert.ok(skill.split("\n").length < 500);

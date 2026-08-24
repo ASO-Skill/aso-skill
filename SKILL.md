@@ -4,7 +4,7 @@ description: Query ASO Skill for current Apple App Store search rankings, keywor
 license: MIT
 metadata:
   author: ASO Skill
-  version: "1.6.0"
+  version: "1.6.1"
 ---
 
 # Use ASO Skill
@@ -75,6 +75,7 @@ Use `npx --yes @aso-skill/cli@0.1.4 help` for the complete syntax. For durable i
 ## Interpret results
 
 - Report the storefront, platform when applicable, observation time from `fetchedAt`, and whether `cache` is `hit`, `refresh`, or `stale` when freshness matters.
+- Search is fresh for one hour and a `stale` search fallback is never older than 24 hours. Optional result fields may be absent when app-summary enrichment is throttled.
 - Preserve the API's distinction between difficulty and popularity. Do not combine them into a proprietary score unless the user asks for an explicitly labeled heuristic.
 - For search results, distinguish rank `position` from optional category rank.
 - For app lookup, report `missingAppIds` instead of silently dropping requested IDs.
