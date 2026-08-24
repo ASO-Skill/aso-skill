@@ -10,7 +10,8 @@ test("skill metadata and browser-auth instructions are complete", async () => {
   const skill = await readFile(join(root, "SKILL.md"), "utf8");
   assert.match(skill, /^---\nname: aso-skill\n/);
   assert.match(skill, /description: .+\nlicense: MIT\n/);
-  assert.match(skill, /github:aso-skill\/cli#v0\.1\.1 login/);
+  assert.match(skill, /github:aso-skill\/cli#v0\.1\.2 login/);
+  assert.match(skill, /verifies that the selected store is writable/);
   assert.match(skill, /operating-system credential store/);
   assert.match(skill, /Do not ask the user to paste a key or create `\.env`/);
   assert.doesNotMatch(skill, /scripts\/aso-skill\.mjs|\bTODO\b|\[TODO/);
