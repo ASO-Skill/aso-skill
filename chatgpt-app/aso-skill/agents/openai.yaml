@@ -1,0 +1,15 @@
+interface:
+  display_name: "ASO Skill"
+  short_description: "Research App Store keywords and competitors"
+  default_prompt: "Use $aso-skill to analyze an App Store keyword and its leading competitors."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "aso-skill"
+      description: "ASO Skill's commerce-free ChatGPT MCP server"
+      transport: "streamable_http"
+      url: "https://api.asoskill.com/mcp/openai"
+
+policy:
+  allow_implicit_invocation: true
