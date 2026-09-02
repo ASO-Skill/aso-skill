@@ -2,6 +2,8 @@
 
 The official public integration package for [ASO Skill](https://www.asoskill.com). It combines a portable [Agent Plugin](https://agent-plugins.org/), an installable [Agent Skill](https://agentskills.io/), and declarative configuration for the hosted MCP server.
 
+[![Smithery](https://smithery.ai/badge/viktor-3lay/aso-skill)](https://smithery.ai/servers/viktor-3lay/aso-skill)
+
 It supports current search rankings and keyword difficulty, keyword popularity, detailed metadata for up to 10 App Store IDs, credit balance and pack discovery, and human-completed checkout when the account owner asks to top up.
 
 ## Install
