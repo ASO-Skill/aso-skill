@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "aso-skill",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Research current Apple App Store keywords, rankings, popularity, and competitor metadata.",
   "author": {
     "name": "Hesselbom Tech AB",

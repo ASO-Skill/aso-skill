@@ -1,6 +1,6 @@
 {
   "name": "aso-skill-agent-plugin",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "private": true,
   "description": "A portable Agent Plugin and Agent Skill for the ASO Skill public API",
   "type": "module",

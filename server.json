@@ -3,7 +3,7 @@
   "name": "com.asoskill/aso-skill",
   "title": "ASO Skill",
   "description": "Current App Store rankings, keyword metrics, app metadata, and credit balances for AI agents.",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "websiteUrl": "https://www.asoskill.com/mcp",
   "icons": [
     {

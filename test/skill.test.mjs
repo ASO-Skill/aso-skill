@@ -40,7 +40,7 @@ test("portable Agent Plugin manifests use the hosted OAuth MCP server", async ()
   const plugin = JSON.parse(await readFile(join(root, "plugin.json"), "utf8"));
   assert.equal(plugin.$schema, "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json");
   assert.equal(plugin.name, "aso-skill");
-  assert.equal(plugin.version, "1.6.1");
+  assert.equal(plugin.version, "1.6.2");
 
   const mcp = JSON.parse(await readFile(join(root, "mcp.json"), "utf8"));
   assert.equal(mcp.$schema, "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json");
