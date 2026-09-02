@@ -1,0 +1,21 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.asoskill/aso-skill",
+  "title": "ASO Skill",
+  "description": "Current App Store rankings, keyword metrics, app metadata, and credit balances for AI agents.",
+  "version": "1.6.1",
+  "websiteUrl": "https://www.asoskill.com/mcp",
+  "icons": [
+    {
+      "src": "https://www.asoskill.com/aso-skill-mark-512.png",
+      "mimeType": "image/png",
+      "sizes": ["512x512"]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api.asoskill.com/mcp"
+    }
+  ]
+}

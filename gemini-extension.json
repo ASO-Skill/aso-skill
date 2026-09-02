@@ -1,0 +1,14 @@
+{
+  "name": "aso-skill",
+  "version": "1.6.1",
+  "description": "Research current Apple App Store keywords, rankings, popularity, and competitor metadata with ASO Skill.",
+  "mcpServers": {
+    "aso-skill": {
+      "httpUrl": "https://api.asoskill.com/mcp",
+      "oauth": {
+        "enabled": true,
+        "scopes": ["data", "credits"]
+      }
+    }
+  }
+}
