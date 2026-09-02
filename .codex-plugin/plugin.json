@@ -1,6 +1,6 @@
 {
   "name": "aso-skill",
-  "version": "1.5.0",
+  "version": "1.6.2",
   "description": "Research current Apple App Store keywords and competitors with ASO Skill.",
   "author": {
     "name": "Hesselbom Tech AB",
@@ -22,7 +22,13 @@
     "websiteURL": "https://www.asoskill.com",
     "privacyPolicyURL": "https://www.asoskill.com/privacy",
     "termsOfServiceURL": "https://www.asoskill.com/terms",
-    "defaultPrompt": "Research an App Store keyword and summarize its leading competitors.",
-    "brandColor": "#A7FF4F"
+    "defaultPrompt": [
+      "Research an App Store keyword and summarize its leading competitors.",
+      "Compare the difficulty and popularity of an App Store keyword.",
+      "Look up App Store apps and compare their positioning."
+    ],
+    "brandColor": "#A7FF4F",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/icon.png"
   }
 }
