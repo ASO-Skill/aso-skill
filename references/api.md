@@ -6,7 +6,7 @@ This is a compact working reference for API v1. The canonical live OpenAPI 3.1 c
 
 Remote clients should connect to `https://api.asoskill.com/mcp`. Standard protected-resource and authorization-server metadata advertise OAuth dynamic client registration, authorization code with S256 PKCE, the exact MCP resource, refresh, and revocation endpoints.
 
-The tools are `search_app_store`, `get_keyword_popularity`, `lookup_app_store_apps`, `get_credit_balance`, and `list_credit_packs`. The first three cost one credit on success; balance and pack discovery are free. Checkout is deliberately not exposed through MCP. The server also advertises the static `aso-skill` Agent Skill through `io.modelcontextprotocol/skills` for compatible clients. Use the HTTP API details below only when operating through the CLI or building a direct integration.
+The tools are `search_app_store`, `autocomplete_app_store_keywords`, `get_keyword_popularity`, `lookup_app_store_apps`, `get_credit_balance`, and `list_credit_packs`. The first four cost one credit on success; balance and pack discovery are free. Checkout is deliberately not exposed through MCP. The server also advertises the static `aso-skill` Agent Skill through `io.modelcontextprotocol/skills` for compatible clients. Use the HTTP API details below only when operating through the CLI or building a direct integration.
 
 ## Authentication and charging
 
@@ -22,13 +22,14 @@ Send the resulting long-lived API key as `Authorization: Bearer <key>`. Never pu
 | `POST /v1/auth/device/token` | Device code + verifier | 0 |
 | `DELETE /v1/auth/credential` | API key | 0 |
 | `POST /v1/search` | API key | 1 |
+| `POST /v1/autocomplete` | API key | 1 |
 | `POST /v1/popularity` | API key | 1 |
 | `POST /v1/apps/lookup` | API key | 1 for the whole 1–10 app batch |
 | `GET /v1/credits` | API key | 0 |
 | `GET /v1/billing/packs` | No | 0 |
 | `POST /v1/billing/checkout` | API key | 0 |
 
-Validation errors and failed upstream calls do not consume a credit. Search data is fresh for one hour and a stale search fallback is never older than 24 hours. Compact search app summaries are reused for eight hours; optional result fields may be absent when Apple throttles enrichment. Popularity and app lookup data are fresh for eight hours. Inspect `cache` and `fetchedAt` on data responses.
+Validation errors and failed upstream calls do not consume a credit. Search data is fresh for one hour and a stale search fallback is never older than 24 hours. Autocomplete is fresh for 30 days per storefront and platform. Compact search app summaries are reused for eight hours; optional result fields may be absent when Apple throttles enrichment. Popularity and app lookup data are fresh for eight hours. Low popularity may use a separate 30-day iPhone autocomplete summary whose longer cold curves finish in the background. Inspect `cache`, `source`, and `fetchedAt` on data responses.
 
 Agent credentials support `data`, `credits`, and `checkout` scopes. Default to `data` and `credits`; request `checkout` only with explicit user intent. An authorization request expires after ten minutes. Self-revocation can take up to five minutes to propagate through the authorizer cache.
 
@@ -52,6 +53,20 @@ Agent credentials support `data`, `credits`, and `checkout` scopes. Default to `
 
 The response contains the normalized request, `difficulty` from 0–100, `resultCount`, ordered `results`, `cache`, `fetchedAt`, and `requestId`. Each result always has `position`, `appId`, and `name`; it can also include subtitle, developer, rating, rating count, category information, URL, and icon.
 
+### Autocomplete
+
+`POST /v1/autocomplete`
+
+```json
+{
+  "term": "photo ed",
+  "storefront": "US",
+  "platform": "mac"
+}
+```
+
+The request uses the same term, storefront, and platform rules as search. The response contains up to ten ordered, unique keyword `suggestions`, excluding app, developer, and editorial navigation entities, plus cache and request metadata. Entries are cached independently for 30 days per storefront and platform.
+
 ### Popularity
 
 `POST /v1/popularity`
@@ -63,7 +78,7 @@ The response contains the normalized request, `difficulty` from 0–100, `result
 }
 ```
 
-The response contains `score` from 1–100 and `source`, which is one of `monthly`, `direct`, `related`, or `fallback`, plus freshness and request metadata. Popularity is storefront-specific and does not accept a platform.
+The response contains `score` from 1–100 and `source`, which is one of `monthly`, `direct`, `related`, `autocomplete`, or `fallback`, plus freshness and request metadata. `autocomplete` is a conservative 6–10 estimate used only when an exact term appears before the full iPhone query and raises an otherwise low related/fallback score. Popularity is storefront-specific and does not accept a platform.
 
 ### App lookup
 

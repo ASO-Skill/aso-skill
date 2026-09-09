@@ -1,10 +1,10 @@
 ---
 name: aso-skill
-description: Query ASO Skill for current Apple App Store search rankings, keyword difficulty and popularity, app metadata, credit balances, and credit-pack checkout discovery. Use for live App Store keyword or competitor research through ASO Skill. Do not use for Android data, download or revenue estimates, historical rankings, or predictions of future ranking performance.
+description: Query ASO Skill for current Apple App Store search rankings, autocomplete suggestions, keyword difficulty and popularity, app metadata, credit balances, and credit-pack checkout discovery. Use for live App Store keyword or competitor research through ASO Skill. Do not use for Android data, download or revenue estimates, historical rankings, or predictions of future ranking performance.
 license: MIT
 metadata:
   author: ASO Skill
-  version: "1.6.1"
+  version: "1.8.0"
 ---
 
 # Use ASO Skill
@@ -13,9 +13,9 @@ Use the hosted ASO Skill MCP tools when they are connected. Otherwise use the AS
 
 ## Boundaries
 
-- Use this skill for current App Store search results, keyword difficulty (0–100), keyword popularity (1–100), or metadata for known App Store IDs.
+- Use this skill for current App Store search results, autocomplete suggestions, keyword difficulty (0–100), keyword popularity (1–100), or metadata for known App Store IDs.
 - Do not claim that the API supplies Android data, downloads, revenue, historical keyword rankings, or future ranking outcomes.
-- A successful `search`, `popularity`, or `apps` request costs one credit, including a cache hit. `credits`, `packs`, `status`, and browser login are free.
+- A successful `search`, `autocomplete`, `popularity`, or `apps` request costs one credit, including a cache hit. `credits`, `packs`, `status`, and browser login are free.
 - Never print an API key, place it in a URL or command argument, commit it, or include it in a response. Do not ask the user to paste a key or create `.env` for interactive use.
 - Use only the paid calls needed for the user's request. Batch as many as 10 App Store IDs into one `apps` call.
 - Do not automatically retry a network failure whose HTTP outcome is unknown: a successful first request may already have consumed a credit.
@@ -25,6 +25,7 @@ Use the hosted ASO Skill MCP tools when they are connected. Otherwise use the AS
 | User need | MCP tool / CLI call | Cost on success |
 | --- | --- | --- |
 | Current ranking results and difficulty | `search_app_store` / `search` | 1 credit |
+| Platform-specific keyword completions | `autocomplete_app_store_keywords` / `autocomplete` | 1 credit |
 | Keyword popularity | `get_keyword_popularity` / `popularity` | 1 credit |
 | Keyword opportunity using both measures | both keyword tools / calls | 2 credits |
 | Metadata for 1–10 known app IDs | `lookup_app_store_apps` / one batched `apps` | 1 credit |
@@ -32,7 +33,7 @@ Use the hosted ASO Skill MCP tools when they are connected. Otherwise use the AS
 | Remaining balance | `get_credit_balance` / `credits` | Free |
 | Available packs | `list_credit_packs` / `packs` | Free |
 
-If the user did not specify a storefront or platform, infer them from context. Otherwise use `US` and `iphone`, and state that assumption. Storefronts are two-letter country codes. Search and app lookup platforms are `iphone`, `ipad`, `mac`, `appletv`, `watch`, and `vision`; popularity has no platform parameter.
+If the user did not specify a storefront or platform, infer them from context. Otherwise use `US` and `iphone`, and state that assumption. Storefronts are two-letter country codes. Search, autocomplete, and app lookup platforms are `iphone`, `ipad`, `mac`, `appletv`, `watch`, and `vision`; popularity has no platform parameter.
 
 ## Authenticate without handling secrets
 
@@ -41,13 +42,13 @@ If the hosted MCP tools are available, use them directly. The client handles OAu
 For a local agent without the hosted MCP connection, use the official CLI from its public npm package:
 
 ```bash
-npx --yes @aso-skill/cli@0.1.4 status
+npx --yes @aso-skill/cli@0.1.6 status
 ```
 
 If status says the user is not logged in, start browser-assisted login:
 
 ```bash
-npx --yes @aso-skill/cli@0.1.4 login
+npx --yes @aso-skill/cli@0.1.6 login
 ```
 
 Before requesting a credential, the CLI verifies that the selected store is writable. The command then normally opens the ASO Skill connection page. Immediately give the user the URL and connection code printed by the command, then keep the command running while they sign in and approve. The default credential requests only `data` and `credits`, expires after 90 days, and is stored in the operating-system credential store. The API-key plaintext must not appear in terminal output or the conversation.
@@ -63,23 +64,24 @@ When connected, call the MCP tools by their names from the table above. Prefer M
 For a local terminal-capable agent, run:
 
 ```bash
-npx --yes @aso-skill/cli@0.1.4 search "workout planner" --storefront US --platform iphone
-npx --yes @aso-skill/cli@0.1.4 popularity "workout planner" --storefront US
-npx --yes @aso-skill/cli@0.1.4 apps 123456789 987654321 --storefront US --platform iphone
-npx --yes @aso-skill/cli@0.1.4 credits
-npx --yes @aso-skill/cli@0.1.4 packs
+npx --yes @aso-skill/cli@0.1.6 search "workout planner" --storefront US --platform iphone
+npx --yes @aso-skill/cli@0.1.6 autocomplete "workout" --storefront US --platform iphone
+npx --yes @aso-skill/cli@0.1.6 popularity "workout planner" --storefront US
+npx --yes @aso-skill/cli@0.1.6 apps 123456789 987654321 --storefront US --platform iphone
+npx --yes @aso-skill/cli@0.1.6 credits
+npx --yes @aso-skill/cli@0.1.6 packs
 ```
 
-Use `npx --yes @aso-skill/cli@0.1.4 help` for the complete syntax. For durable integrations, unusual response fields, authentication details, or schema questions, read [references/api.md](references/api.md) and then consult the canonical live contract at <https://www.asoskill.com/openapi.yaml>.
+Use `npx --yes @aso-skill/cli@0.1.6 help` for the complete syntax. For durable integrations, unusual response fields, authentication details, or schema questions, read [references/api.md](references/api.md) and then consult the canonical live contract at <https://www.asoskill.com/openapi.yaml>.
 
 ## Interpret results
 
 - Report the storefront, platform when applicable, observation time from `fetchedAt`, and whether `cache` is `hit`, `refresh`, or `stale` when freshness matters.
-- Search is fresh for one hour and a `stale` search fallback is never older than 24 hours. Optional result fields may be absent when app-summary enrichment is throttled.
+- Search is fresh for one hour and a `stale` search fallback is never older than 24 hours. Autocomplete is fresh for 30 days per storefront and platform. Optional result fields may be absent when app-summary enrichment is throttled.
 - Preserve the API's distinction between difficulty and popularity. Do not combine them into a proprietary score unless the user asks for an explicitly labeled heuristic.
 - For search results, distinguish rank `position` from optional category rank.
 - For app lookup, report `missingAppIds` instead of silently dropping requested IDs.
-- Popularity `source` can be `monthly`, `direct`, `related`, or `fallback`. Identify it when material; avoid overstating precision, especially for a fallback.
+- Popularity `source` can be `monthly`, `direct`, `related`, `autocomplete`, or `fallback`. `autocomplete` is a conservative 6–10 estimate for a censored low-volume term; it never lowers a stronger score. Identify the source when material and avoid overstating precision.
 - Keep `requestId` available for troubleshooting, but omit it from ordinary prose unless useful.
 
 ## Handle failures
@@ -101,7 +103,7 @@ Pack discovery is public and free. Prices exclude applicable tax.
 Only create a checkout after the user explicitly selects a current `packId` and asks to continue. The credential must include the separately approved `checkout` scope. Then run:
 
 ```bash
-npx --yes @aso-skill/cli@0.1.4 checkout <pack-id> --confirm-checkout
+npx --yes @aso-skill/cli@0.1.6 checkout <pack-id> --confirm-checkout
 ```
 
 Return the short-lived Polar URL as an action the account owner must complete. Do not claim a purchase succeeded until the user completes checkout and `credits` shows the new balance. Never automatically repeat checkout creation. If the API returns `legal_acceptance_required`, direct the user to <https://www.asoskill.com/accept-terms>.

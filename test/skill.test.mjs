@@ -10,13 +10,14 @@ test("skill metadata and browser-auth instructions are complete", async () => {
   const skill = await readFile(join(root, "SKILL.md"), "utf8");
   assert.match(skill, /^---\nname: aso-skill\n/);
   assert.match(skill, /description: .+\nlicense: MIT\n/);
-  assert.match(skill, /@aso-skill\/cli@0\.1\.4 login/);
+  assert.match(skill, /@aso-skill\/cli@0\.1\.6 login/);
   assert.match(skill, /verifies that the selected store is writable/);
   assert.match(skill, /operating-system credential store/);
   assert.match(skill, /https:\/\/api\.asoskill\.com\/mcp/);
   assert.match(skill, /search_app_store/);
   assert.match(skill, /list_credit_packs/);
-  assert.match(skill, /version: "1\.6\.1"/);
+  assert.match(skill, /version: "1\.8\.0"/);
+  assert.match(skill, /autocomplete_app_store_keywords/);
   assert.match(skill, /never older than 24 hours/);
   assert.match(skill, /Do not ask the user to paste a key or create `\.env`/);
   assert.doesNotMatch(skill, /scripts\/aso-skill\.mjs|\bTODO\b|\[TODO/);
@@ -24,6 +25,7 @@ test("skill metadata and browser-auth instructions are complete", async () => {
 
   const apiReference = await readFile(join(root, "references", "api.md"), "utf8");
   assert.match(apiReference, /`POST \/v1\/auth\/device`/);
+  assert.match(apiReference, /`POST \/v1\/autocomplete`/);
   assert.match(apiReference, /https:\/\/www\.asoskill\.com\/openapi\.yaml/);
 
   const openai = await readFile(join(root, "agents", "openai.yaml"), "utf8");
@@ -40,7 +42,7 @@ test("portable Agent Plugin manifests use the hosted OAuth MCP server", async ()
   const plugin = JSON.parse(await readFile(join(root, "plugin.json"), "utf8"));
   assert.equal(plugin.$schema, "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json");
   assert.equal(plugin.name, "aso-skill");
-  assert.equal(plugin.version, "1.6.2");
+  assert.equal(plugin.version, "1.8.0");
 
   const mcp = JSON.parse(await readFile(join(root, "mcp.json"), "utf8"));
   assert.equal(mcp.$schema, "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json");

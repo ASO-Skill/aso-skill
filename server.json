@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "com.asoskill/aso-skill",
   "title": "ASO Skill",
-  "description": "Current App Store rankings, keyword metrics, app metadata, and credit balances for AI agents.",
-  "version": "1.6.2",
+  "description": "Current App Store rankings, autocomplete, keyword metrics, app metadata, and credit balances for AI agents.",
+  "version": "1.8.0",
   "websiteUrl": "https://www.asoskill.com/mcp",
   "icons": [
     {

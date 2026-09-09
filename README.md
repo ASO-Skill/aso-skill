@@ -4,7 +4,7 @@ The official public integration package for [ASO Skill](https://www.asoskill.com
 
 [![Smithery](https://smithery.ai/badge/viktor-3lay/aso-skill)](https://smithery.ai/servers/viktor-3lay/aso-skill)
 
-It supports current search rankings and keyword difficulty, keyword popularity, detailed metadata for up to 10 App Store IDs, credit balance and pack discovery, and human-completed checkout when the account owner asks to top up.
+It supports current search rankings and keyword difficulty, platform-specific autocomplete suggestions, keyword popularity, detailed metadata for up to 10 App Store IDs, credit balance and pack discovery, and human-completed checkout when the account owner asks to top up.
 
 ## Install
 
@@ -32,7 +32,7 @@ Compatible remote MCP clients can connect to:
 https://api.asoskill.com/mcp
 ```
 
-The connection uses OAuth authorization code with S256 PKCE, dynamic client registration, short-lived access tokens, refresh rotation with reuse detection, and dashboard revocation. It exposes five focused tools plus a hosted snapshot of this Agent Skill for compatible clients. See the [MCP guide](https://www.asoskill.com/mcp), [ChatGPT guide](https://www.asoskill.com/chatgpt), and [Claude guide](https://www.asoskill.com/claude).
+The connection uses OAuth authorization code with S256 PKCE, dynamic client registration, short-lived access tokens, refresh rotation with reuse detection, and dashboard revocation. It exposes six focused tools plus a hosted snapshot of this Agent Skill for compatible clients. See the [MCP guide](https://www.asoskill.com/mcp), [ChatGPT guide](https://www.asoskill.com/chatgpt), and [Claude guide](https://www.asoskill.com/claude).
 
 Authentication is client-managed. The repository contains no API keys, OAuth client secrets, user credentials, or environment files. Clients discover the authorization server from the protected MCP resource and open ASO Skill's browser-based consent flow.
 
@@ -41,7 +41,7 @@ Authentication is client-managed. The repository contains no API keys, OAuth cli
 The skill uses the separate [ASO Skill CLI](https://github.com/aso-skill/cli). The agent runs browser-assisted login, the user signs in to ASO Skill and approves the exact scopes, and the CLI saves the credential in the operating-system credential store. Neither the user nor the agent has to copy an API key into `.env` or a conversation.
 
 ```bash
-npx --yes @aso-skill/cli@0.1.4 login
+npx --yes @aso-skill/cli@0.1.6 login
 ```
 
 The default credential has `data` and `credits` access and expires after 90 days. Checkout is an explicit additional permission. `ASO_SKILL_API_KEY` remains available as an override for CI when supplied by the CI platform's secret manager.
@@ -56,7 +56,7 @@ Use ASO Skill to compare the difficulty and popularity of "workout planner" in t
 Find the leading iPhone apps for "habit tracker" in Sweden and summarize the top five competitors.
 ```
 
-Every successful search, popularity, or app-lookup request costs one credit. The skill minimizes paid calls and batches app lookups.
+Every successful search, autocomplete, popularity, or app-lookup request costs one credit. The skill minimizes paid calls and batches app lookups.
 
 ## Repository layout
 
